@@ -122,7 +122,7 @@
              Using method argument "value" you must define all possible conditions language have for translation 
              and return set of underscores ("_") as it is an ID for locale format. No underscore ("") means default locale format;
  */
--(NSString *)getLocaleFormatUnderscoresWithValue:(double)value
++(NSString *)getLocaleFormatUnderscoresWithValue:(double)value
 {
     NSString *localeCode = [[NSLocale preferredLanguages] objectAtIndex:0];
     
