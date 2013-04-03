@@ -1,20 +1,20 @@
-#import "NSDate+TimeAgo.h"
+#import "KLTimeAgo.h"
 
 @interface NSDate()
 -(NSString *)getLocaleFormatUnderscoresWithValue:(double)value;
 @end
 
-@implementation NSDate (TimeAgo)
+@implementation KLTimeAgo
 
 #ifndef NSDateTimeAgoLocalizedStrings
 #define NSDateTimeAgoLocalizedStrings(key) \
     NSLocalizedStringFromTable(key, @"NSDateTimeAgo", nil)
 #endif
 
-- (NSString *)timeAgo 
++ (NSString *)timeSinceDate:(NSDate *)date
 {
     NSDate *now = [NSDate date];
-    double deltaSeconds = fabs([self timeIntervalSinceDate:now]);
+    double deltaSeconds = fabs([date timeIntervalSinceDate:now]);
     double deltaMinutes = deltaSeconds / 60.0f;
     
     int minutes;
@@ -88,25 +88,25 @@
     return [NSString stringWithFormat:NSDateTimeAgoLocalizedStrings(localeFormat), minutes];
 }
 
-- (NSString *) timeAgoWithLimit:(NSTimeInterval)limit
++ (NSString *) timeSinceDate:(NSDate *)date withLimit:(NSTimeInterval)limit
 {
-    return [self timeAgoWithLimit:limit dateFormat:NSDateFormatterFullStyle andTimeFormat:NSDateFormatterFullStyle];
+    return [self timeSinceDate:date withLimit:limit dateFormat:NSDateFormatterFullStyle andTimeFormat:NSDateFormatterFullStyle];
 }
 
-- (NSString *) timeAgoWithLimit:(NSTimeInterval)limit dateFormat:(NSDateFormatterStyle)dFormatter andTimeFormat:(NSDateFormatterStyle)tFormatter
++ (NSString *) timeSinceDate:(NSDate *)date withLimit:(NSTimeInterval)limit dateFormat:(NSDateFormatterStyle)dFormatter andTimeFormat:(NSDateFormatterStyle)tFormatter
 {
-    if (fabs([self timeIntervalSinceDate:[NSDate date]]) <= limit)
-        return [self timeAgo];
+    if (fabs([date timeIntervalSinceDate:[NSDate date]]) <= limit)
+        return [self timeSinceDate:date];
     
-    return [NSDateFormatter localizedStringFromDate:self
+    return [NSDateFormatter localizedStringFromDate:date
                                           dateStyle:dFormatter
                                           timeStyle:tFormatter];
 }
 
 // Helper functions
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
 
 /*
  - Author  : Almas Adilbek
@@ -143,6 +143,6 @@
     return @"";
 }
 
-#pragma clang diagnostic pop
+//#pragma clang diagnostic pop
 
 @end
